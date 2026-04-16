@@ -4,18 +4,16 @@
 #include <iterator>
 #include <string> 
 #include <vector>
-#include <list>
+//#include <list>
 #include <algorithm>
 
 std::vector<std::string> read_file(std::string filename)
 {
   std::ifstream file{};
-  std::vector<std::string> text ;
-  std::string line{};
+  //std::vector<std::string> text ;
+  //std::string line{};
 
   file.open(filename);
-
- 
 
   if(file.is_open())
    {
@@ -23,13 +21,14 @@ std::vector<std::string> read_file(std::string filename)
 				 std::istream_iterator<std::string>());
     }
   else 
-   {  throw std::logic_error("testa ett annat fillnamn") };
-  
+   {  
+    throw std::logic_error("testa ett annat fillnamn");
+  };
 }
 
-void print(std::vector<std::string> text)
+void print(const std::vector<std::string> & text)
 {
-  std::for_each(text.cbegin(), text.cend(), [text](std::string s ) {std::cout << s << ' ';} );
+  std::for_each(text.cbegin(), text.cend(), [](std::string s ) {std::cout << s << ' ';} );
   std::cout << std::endl;
 }
 
@@ -55,7 +54,7 @@ void remove_word(std::vector<std::string> & text, std::string parameter)
 void substitute(std::vector<std::string> & text, std::string  parameter)
 {
   std::string old_word{parameter};
-    old_word.erase(std::find(old_word.begin(),old_word.end(),'+') ,old_w ord.end());
+    old_word.erase(std::find(old_word.begin(),old_word.end(),'+') ,old_word.end());
   std::string new_word{parameter.substr(parameter.find_first_of('+') + 1)};
   std::replace(text.begin(), text.end(), old_word, new_word);
 }
@@ -72,8 +71,8 @@ void frequency(std::vector<std::string>  text)
   std::sort(text.begin(), text.end(),
 	    [text](std::string word1, std::string word2)
 	    {
-	      int num1{std::count(text.begin(), text.end(), word1)};
-	      int num2 {std::count(text.begin(), text.end(), word2)};
+	      int num1{(int)std::count(text.begin(), text.end(), word1)};
+	      int num2{(int)std::count(text.begin(), text.end(), word2)};
 	      return num1 > num2 ;
 	    });
 
@@ -91,9 +90,12 @@ int main(int argc, char** argv)
   filename = *arguments.begin();
   arguments.erase(arguments.begin());
 
-  
-  
-  text = read_file(filename);
+  try {
+    text = read_file(filename);
+} catch (const std::logic_error & e) {
+    std::cerr << "Error: Could not open file \"" << filename << "\" — " << e.what() << std::endl;
+    return 1;
+}
 
   for(std::string a : arguments)
     {
