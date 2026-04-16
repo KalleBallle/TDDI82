@@ -71,8 +71,8 @@ void frequency(std::vector<std::string>  text)
   std::sort(text.begin(), text.end(),
 	    [text](std::string word1, std::string word2)
 	    {
-	      int num1{(int)std::count(text.begin(), text.end(), word1)};
-	      int num2{(int)std::count(text.begin(), text.end(), word2)};
+	      int num1{static_cast<int>(std::count(text.begin(), text.end(), word1))};
+	      int num2{static_cast<int>(std::count(text.begin(), text.end(), word2))};
 	      return num1 > num2 ;
 	    });
 
