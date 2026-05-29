@@ -1,0 +1,32 @@
+#ifndef NODE_H_
+#define NODE_H_
+
+#include <vector>
+#include "c_p.h" 
+
+template <typename T>
+class Node
+{
+public:
+    
+    Node(T value = 0);
+
+    void insert(c_p<Node> node);
+    void remove(c_p<Node> node);
+
+    std::vector<c_p<Node>>::const_iterator begin() const;
+    std::vector<c_p<Node>>::const_iterator end() const;
+
+public:
+
+   T value { };
+
+private:
+
+    std::vector<c_p<Node>> neighbours { };
+
+};
+
+std::vector<c_p<Node>> get_all_nodes(c_p<Node> root);
+
+#endif
